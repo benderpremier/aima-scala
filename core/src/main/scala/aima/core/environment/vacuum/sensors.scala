@@ -1,25 +1,16 @@
 package aima.core.environment.vacuum
 
-import aima.core.agent.{Environment, UnreliableSensor, Agent}
-import aima.core.random.DefaultRandomness
+import aima.core.agent.{Agent, Sensor}
 
 /**
   * @author Shawn Garner
   */
-class AgentLocationSensor(val agent: Agent[Vacuum, VacuumPercept, VacuumAction], noPercept: VacuumPercept)
-    extends UnreliableSensor[Vacuum, VacuumPercept]
-    with DefaultRandomness {
+class AgentLocationSensor(val agent: Agent[Vacuum, VacuumPercept, VacuumAction]) extends Sensor[Vacuum, VacuumPercept] {
   def perceive(vacuum: Vacuum): VacuumPercept =
-    unreliably() {
-      vacuum.map.getAgentLocation(agent).getOrElse(NoPercept)
-    }(noPercept)
+    vacuum.map.getAgentLocation(agent).getOrElse(NoPercept)
 }
 
-class DirtSensor(val agent: Agent[Vacuum, VacuumPercept, VacuumAction], noPercept: VacuumPercept)
-    extends UnreliableSensor[Vacuum, VacuumPercept]
-    with DefaultRandomness { self =>
+class DirtSensor(val agent: Agent[Vacuum, VacuumPercept, VacuumAction]) extends Sensor[Vacuum, VacuumPercept] {
   def perceive(vacuum: Vacuum): VacuumPercept =
-    unreliably() {
-      vacuum.map.getDirtStatus(agent).getOrElse(NoPercept)
-    }(noPercept)
+    vacuum.map.getDirtStatus(agent).getOrElse(NoPercept)
 }
